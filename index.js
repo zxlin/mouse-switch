@@ -5,6 +5,8 @@ const DEVICES = require('./devices');
 
 const EVENT_DEV = '/dev/input/event0';
 
+const ACTION_MIN_DELAY = 1000 * 2;
+
 const mouse = new Mouse(EVENT_DEV);
 
 const LIGHTS = {
@@ -54,15 +56,21 @@ const SCENES = {
 
 mouse.on('BTN_LEFT_DOWN', () => {});
 
+let lastDown = 0;
 mouse.on('WHEEL_DOWN', () => {
-  if (LIGHTS.FLOOR_LAMP.state.power === 'off') {
+  const now = Date.now();
+  if (now > lastDown + ACTION_MIN_DELAY) {
     LIGHTS.FLOOR_LAMP.setScene('ct', 4955, 100);
+    lastDown = now;
   }
 });
 
+let lastUp = 0;
 mouse.on('WHEEL_UP', () => {
-  if (LIGHTS.FLOOR_LAMP.state.power === 'on') {
+  const now = Date.now();
+  if (now > lastUp + ACTION_MIN_DELAY) {
     turnOffAll();
+    lastUp = now;
   }
 });
 

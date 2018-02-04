@@ -91,18 +91,20 @@ class Yeelight extends EventEmitter {
 
   async getState() {
     const result = await this.send('get_prop', 'power', 'bright', 'ct', 'rgb', 'hue', 'sat', 'color_mode');
-    const [ power, bright, colorTemperature, rgb, hue, sat, colorMode ] = result;
+    if (result) {
+      const [ power, bright, colorTemperature, rgb, hue, sat, colorMode ] = result;
 
-    const stats = {
-      power,
-      bright : Number(bright),
-      colorTemperature : Number(colorTemperature),
-      rgb : Number(rgb),
-      hue : Number(hue),
-      sat : Number(sat),
-      colorMode,
-    };
-    this.state = stats;
+      const stats = {
+        power,
+        bright : Number(bright),
+        colorTemperature : Number(colorTemperature),
+        rgb : Number(rgb),
+        hue : Number(hue),
+        sat : Number(sat),
+        colorMode,
+      };
+      this.state = stats;
+    }
   }
 
   setColorTemperature(ct, effect = 'smooth', duration = DEFAULT_DURATION) {
