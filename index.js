@@ -51,16 +51,17 @@ const SCENES = {
   LAMP() {
     turnOffAll('LAMP');
     LIGHTS.LAMP.setScene('ct', 2911, 100);
-  }
+  },
+  FLOOR_LAMP_DAYLIGHT() {
+    LIGHTS.FLOOR_LAMP.setScene('ct', 4955, 100);
+  },
 }
-
-mouse.on('BTN_LEFT_DOWN', () => {});
 
 let lastDown = 0;
 mouse.on('WHEEL_DOWN', () => {
   const now = Date.now();
   if (now > lastDown + ACTION_MIN_DELAY) {
-    LIGHTS.FLOOR_LAMP.setScene('ct', 4955, 100);
+    SCENES.FLOOR_LAMP_DAYLIGHT();
     lastDown = now;
   }
 });
@@ -74,7 +75,9 @@ mouse.on('WHEEL_UP', () => {
   }
 });
 
-mouse.on('BTN_RIGHT_DOWN', () => SCENES.DAYLIGHT());
-mouse.on('WHEEL_RIGHT', () => SCENES.LAMP());
-mouse.on('BTN_SIDE_DOWN', () => SCENES.FULL_WARM());
-mouse.on('BTN_EXTRA_DOWN', () => SCENES.DIM_WARM());
+mouse.on('BTN_LEFT_DOWN', SCENES.FLOOR_LAMP_DAYLIGHT);
+mouse.on('BTN_RIGHT_DOWN', SCENES.FLOOR_LAMP_DAYLIGHT);
+mouse.on('WHEEL_LEFT', SCENES.DAYLIGHT);
+mouse.on('WHEEL_RIGHT', SCENES.LAMP);
+mouse.on('BTN_SIDE_DOWN', SCENES.FULL_WARM);
+mouse.on('BTN_EXTRA_DOWN', SCENES.DIM_WARM);
